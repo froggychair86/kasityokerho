@@ -1,1 +1,10 @@
 # kasityokerho
+
+# Sovelluksen toiminnot:
+
+# - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sovellukseen.
+# - käyttäjä pystyy luomaan uusia tapaamisia ja päättämään niiden ajankohdan ja aiheen.
+# - Käyttäjä näkee sovellukseen lisätyt tapaamiset ja voi ilmoittautua niihin.
+# - Käyttäjä pystyy etsimään tapaamisia hakusanalla.
+# - Sovelluksessa on käyttäjäsivut, joilla näkyy tilastoja ja käyttäjän luomat tapaamiset sekä ne tapaamiset, joihin hän on ilmoittautunut.
+# - Käyttäjä pystyy valitsemaan tapaamiselle yhden tai useamman luokittelun.
