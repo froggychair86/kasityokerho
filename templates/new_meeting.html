@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi tapaaminen</title>
+</head>
+
+<body>
+  <h1>Uusi tapaaminen</h1>
+  <form action="/create_meeting" method="post">
+    <p>
+      Aihe: <br />
+      <input type="text" name="topic" />
+    </p>
+    <p>
+      Kuvaus: <br />
+      <textarea name="description" rows="8" cols="60"></textarea>
+    </p>
+    <p>
+      Päivämäärä: <br />
+      <input type="date" name="date" />
+    </p>
+    <p>
+      Aloitusajankohta: <br />
+      <input type="time" name="start_time" />
+    </p>
+    <p>
+      Lopetusajankohta: <br />
+      <input type="time" name="end_time" />
+    </p>
+
+    <input type="submit" value="Järjestä tapaaminen" />
+  </form>
+</body>
+
+</html>
