@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
+import meetings
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -25,9 +26,7 @@ def create_meeting():
     end_time = request.form["end_time"]
     user_id = session["user_id"]
 
-    sql = """INSERT INTO meetings (topic, description, date, start_time, end_time, user_id)
-             VALUES (?, ?, ?, ?, ?, ?)"""
-    db.execute(sql, [topic, description, date, start_time, end_time, user_id])
+    meetings.add_meeting(topic, description, date, start_time, end_time, user_id)
 
     return redirect("/")
 
