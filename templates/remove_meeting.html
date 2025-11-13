@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tapaamisen poisto</title>
+</head>
+
+<body>
+  <h1>Tapaamisen poisto</h1>
+  <p>
+    {{ meeting.topic }}
+  </p>
+  <p>
+    {{ meeting.description }}
+  </p>
+  <p>
+    {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
+  </p>
+  <p>Haluatko varmasti poistaa tämän tapaamisen?</p>
+  <form action="/remove_meeting/{{ meeting.id }}" method="post">
+    <input type="submit" name="remove" value="Poista" />
+    <input type="submit" name="back" value="Palaa takaisin" />
+  </form>
+</body>
+
+</html>

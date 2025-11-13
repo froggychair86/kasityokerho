@@ -31,3 +31,7 @@ def update_meeting(meeting_id, topic, description, date, start_time, end_time):
                                  end_time = ?
                              WHERE id = ?"""
     db.execute(sql, [topic, description, date, start_time, end_time, meeting_id])
+
+def remove_meeting(meeting_id):
+    sql = "DELETE FROM meetings WHERE id = ?"
+    db.execute(sql, [meeting_id])

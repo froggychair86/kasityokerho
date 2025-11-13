@@ -10,6 +10,7 @@
   {% if session.user_id == meeting.user_id %}
   <p>
     <a href="/edit_meeting/{{ meeting.id }}">Muokkaa</a>
+    <a href="/remove_meeting/{{ meeting.id }}">Poista</a>
   </p>
   {% endif %}
   <p>

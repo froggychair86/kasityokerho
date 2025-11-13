@@ -54,6 +54,19 @@ def update_meeting():
 
     return redirect("/meeting/" + str(meeting_id))
 
+@app.route("/remove_meeting/<int:meeting_id>", methods=["GET", "POST"])
+def remove_meeting(meeting_id):
+    if request.method == "GET":
+        meeting = meetings.get_meeting(meeting_id)
+        return render_template("remove_meeting.html", meeting=meeting)
+
+    if request.method == "POST":
+        if "remove" in request.form:
+            meetings.remove_meeting(meeting_id)
+            return redirect("/")
+        else:
+            return redirect("/meeting/" + str(meeting_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")
