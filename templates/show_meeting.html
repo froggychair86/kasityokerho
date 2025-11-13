@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{ meeting.topic }}</title>
+</head>
+
+<body>
+  <h1>{{ meeting.topic }}</h1>   
+  <p>
+    {{ meeting.description }}
+  </p>
+  <p>
+    {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
+  </p>
+  <p>
+    Tapaamisen järjestäjä: {{ meeting.username }}
+  </p>
+  <p>
+    <a href="/">Takaisin</a>
+  </p>
+</body>
+
+</html>
