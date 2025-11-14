@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import abort, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
@@ -49,11 +49,17 @@ def create_meeting():
 @app.route("/edit_meeting/<int:meeting_id>")
 def edit_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
+    if meeting["user_id"] != session["user_id"]:
+        abort(403)
     return render_template("edit_meeting.html", meeting=meeting)
 
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
     meeting_id = request.form["meeting_id"]
+    meeting = meetings.get_meeting(meeting_id)
+    if meeting["user_id"] != session["user_id"]:
+        abort(403)
+
     topic = request.form["topic"]
     description = request.form["description"]
     date = request.form["date"]
@@ -66,8 +72,11 @@ def update_meeting():
 
 @app.route("/remove_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def remove_meeting(meeting_id):
+    meeting = meetings.get_meeting(meeting_id)
+    if meeting["user_id"] != session["user_id"]:
+        abort(403)
+
     if request.method == "GET":
-        meeting = meetings.get_meeting(meeting_id)
         return render_template("remove_meeting.html", meeting=meeting)
 
     if request.method == "POST":
