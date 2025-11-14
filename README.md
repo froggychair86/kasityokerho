@@ -1,6 +1,6 @@
 # kasityokerho
 
-# Sovelluksen toiminnot:
+## Sovelluksen toiminnot
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sovellukseen.
 - käyttäjä pystyy luomaan uusia tapaamisia ja päättämään niiden ajankohdan ja aiheen.
@@ -8,3 +8,7 @@
 - Käyttäjä pystyy etsimään tapaamisia hakusanalla.
 - Sovelluksessa on käyttäjäsivut, joilla näkyy tilastoja ja käyttäjän luomat tapaamiset sekä ne tapaamiset, joihin hän on ilmoittautunut.
 - Käyttäjä pystyy valitsemaan tapaamiselle yhden tai useamman luokittelun.
+
+## Sovelluksen asennus
+
+- Asenna flask-kirjasto komennolla `$ pip install flask`
