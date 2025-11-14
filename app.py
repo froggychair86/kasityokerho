@@ -9,6 +9,10 @@ import meetings
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     all_meetings = meetings.get_meetings()
@@ -33,10 +37,13 @@ def show_meeting(meeting_id):
 
 @app.route("/new_meeting")
 def new_item():
+    require_login()
     return render_template("new_meeting.html")
 
 @app.route("/create_meeting", methods=["POST"])
 def create_meeting():
+    require_login()
+
     topic = request.form["topic"]
     description = request.form["description"]
     date = request.form["date"]
@@ -50,6 +57,7 @@ def create_meeting():
 
 @app.route("/edit_meeting/<int:meeting_id>")
 def edit_meeting(meeting_id):
+    require_login()
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
         abort(404)
@@ -59,6 +67,7 @@ def edit_meeting(meeting_id):
 
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
+    require_login()
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
@@ -78,6 +87,7 @@ def update_meeting():
 
 @app.route("/remove_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def remove_meeting(meeting_id):
+    require_login()
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
         abort(404)
@@ -138,6 +148,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
     return redirect("/")
