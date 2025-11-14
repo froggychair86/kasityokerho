@@ -35,3 +35,11 @@ def update_meeting(meeting_id, topic, description, date, start_time, end_time):
 def remove_meeting(meeting_id):
     sql = "DELETE FROM meetings WHERE id = ?"
     db.execute(sql, [meeting_id])
+
+def find_meetings(query):
+    sql = """SELECT id, topic
+             FROM meetings
+             WHERE topic LIKE ? OR description LIKE ?
+             ORDER BY id DESC"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like])

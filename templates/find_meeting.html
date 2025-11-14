@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Etsi tapaaminen</title>
+</head>
+
+<body>
+  <h1>Etsi tapaaminen</h1>
+
+  <form action="/find_meeting" method="get">
+    <p>
+      Hakusana: <input type="text" name="query" value="{{ query }}">
+    </p>
+    <input type="submit" value="Etsi">
+  </form>
+
+  <p>
+    <a href="/">Takaisin</a>
+  </p>
+
+  {% if query %}
+  <h2>Tulokset</h2>
+
+  <ul>
+    {% for meeting in results %}
+    <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</body>
+
+</html>

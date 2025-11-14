@@ -14,6 +14,16 @@ def index():
     all_meetings = meetings.get_meetings()
     return render_template("index.html", meetings=all_meetings)
 
+@app.route("/find_meeting")
+def find_meeting():
+    query = request.args.get("query")
+    if query:
+        results = meetings.find_meetings(query)
+    else:
+        query = ""
+        results = []
+    return render_template("find_meeting.html", query=query, results=results)
+
 @app.route("/meeting/<int:meeting_id>")
 def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
