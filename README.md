@@ -11,4 +11,6 @@
 
 ## Sovelluksen asennus
 
-- Asenna flask-kirjasto komennolla `$ pip install flask`
+- Asenna `flask-kirjasto komennolla `$ pip install flask`
+- Luo `database.db`-niminen tiedosto ja lisää siihen taulut komennolla `$ sqlite3 database.db < schema.sql`
+- Sovellus käynnistyy kirjoittamalla komennon `$ flask run` ja klikkaamalla tulosteen linkkiä
