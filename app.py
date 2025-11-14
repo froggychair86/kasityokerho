@@ -27,6 +27,8 @@ def find_meeting():
 @app.route("/meeting/<int:meeting_id>")
 def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
+    if not meeting:
+        abort(404)
     return render_template("show_meeting.html", meeting=meeting)
 
 @app.route("/new_meeting")
@@ -49,6 +51,8 @@ def create_meeting():
 @app.route("/edit_meeting/<int:meeting_id>")
 def edit_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
+    if not meeting:
+        abort(404)
     if meeting["user_id"] != session["user_id"]:
         abort(403)
     return render_template("edit_meeting.html", meeting=meeting)
@@ -57,6 +61,8 @@ def edit_meeting(meeting_id):
 def update_meeting():
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
+    if not meeting:
+        abort(404)
     if meeting["user_id"] != session["user_id"]:
         abort(403)
 
@@ -73,6 +79,8 @@ def update_meeting():
 @app.route("/remove_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def remove_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
+    if not meeting:
+        abort(404)
     if meeting["user_id"] != session["user_id"]:
         abort(403)
 

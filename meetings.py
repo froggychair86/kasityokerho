@@ -21,7 +21,8 @@ def get_meeting(meeting_id):
              FROM meetings, users
              WHERE meetings.user_id = users.id AND
                    meetings.id = ?"""
-    return db.query(sql, [meeting_id])[0]
+    result = db.query(sql, [meeting_id])
+    return result[0] if result else None
 
 def update_meeting(meeting_id, topic, description, date, start_time, end_time):
     sql = """UPDATE meetings SET topic = ?,
