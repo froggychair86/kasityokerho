@@ -87,10 +87,20 @@ def update_meeting():
         abort(403)
 
     topic = request.form["topic"]
+    if not topic or len(topic) > 50:
+        abort(403)
     description = request.form["description"]
+    if not description or len(description) > 1000:
+        abort(403)
     date = request.form["date"]
+    if not date:
+        abort(403)
     start_time = request.form["start_time"]
+    if not start_time:
+        abort(403)
     end_time = request.form["end_time"]
+    if not end_time:
+        abort(403)
 
     meetings.update_meeting(meeting_id, topic, description, date, start_time, end_time)
 
