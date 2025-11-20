@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask
 from flask import abort, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import date
 import config
 import db
 import meetings
@@ -45,10 +46,20 @@ def create_meeting():
     require_login()
 
     topic = request.form["topic"]
+    if not topic or len(topic) > 50:
+        abort(403)
     description = request.form["description"]
+    if not description or len(description) > 1000:
+        abort(403)
     date = request.form["date"]
+    if not date:
+        abort(403)
     start_time = request.form["start_time"]
+    if not start_time:
+        abort(403)
     end_time = request.form["end_time"]
+    if not end_time:
+        abort(403)
     user_id = session["user_id"]
 
     meetings.add_meeting(topic, description, date, start_time, end_time, user_id)
