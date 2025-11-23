@@ -6,6 +6,7 @@ from datetime import date
 import config
 import db
 import meetings
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -18,6 +19,14 @@ def require_login():
 def index():
     all_meetings = meetings.get_meetings()
     return render_template("index.html", meetings=all_meetings)
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    meetings = users.get_meetings(user_id)
+    return render_template("show_user.html", user=user, meetings=meetings)
 
 @app.route("/find_meeting")
 def find_meeting():

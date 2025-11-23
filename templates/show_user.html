@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Käyttäjä {{ user.username }}</title>
+</head>
+
+<body>
+  <h1>Käyttäjä {{ user.username }}</h1>
+  <p>
+    Käyttäjä on järjestänyt yhteensä {{ meetings | count }} tapaamista
+  </p>
+  <h2>Tapaamiset</h2>
+  <ul>
+    {% for meeting in meetings %}
+    <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
+    {% endfor %}
+  </ul>
+  <p>
+    <a href="/">Takaisin</a>
+  </p>
+</body>
+
+</html>

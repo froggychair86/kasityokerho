@@ -20,7 +20,7 @@
     {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
   </p>
   <p>
-    Tapaamisen järjestäjä: {{ meeting.username }}
+    Tapaamisen järjestäjä: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a>
   </p>
   <p>
     <a href="/">Takaisin</a>
