@@ -9,6 +9,7 @@ CREATE TABLE meetings (
     topic TEXT,
     description TEXT,
     date DATE,
-    time TIME,
+    start_time TIME,
+    end_time TIME,
     user_id INTEGER REFERENCES users
 );
