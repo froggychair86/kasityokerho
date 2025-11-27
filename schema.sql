@@ -13,3 +13,10 @@ CREATE TABLE meetings (
     end_time TIME,
     user_id INTEGER REFERENCES users
 );
+
+CREATE TABLE meeting_class (
+    id INTEGER PRIMARY KEY,
+    meeting_id INTEGER REFERENCES meetings,
+    title TEXT,
+    value TEXT
+);

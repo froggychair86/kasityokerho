@@ -23,6 +23,13 @@
     Tapaamisen järjestäjä: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a>
   </p>
   <p>
+    <ul>
+      {% for class in classes %}
+      <li>{{ class.title }}: {{ class.value }}</li>
+      {% endfor %}
+    </ul>
+  </p>
+  <p>
     <a href="/">Takaisin</a>
   </p>
 </body>

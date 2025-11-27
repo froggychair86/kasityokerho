@@ -42,7 +42,8 @@ def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
         abort(404)
-    return render_template("show_meeting.html", meeting=meeting)
+    classes = meetings.get_classes(meeting_id)
+    return render_template("show_meeting.html", meeting=meeting, classes=classes)
 
 @app.route("/new_meeting")
 def new_item():
@@ -70,7 +71,12 @@ def create_meeting():
         abort(403)
     user_id = session["user_id"]
 
-    meetings.add_meeting(topic, description, date, start_time, end_time, user_id)
+    classes = []
+    guidance = request.form["guidance"]
+    if guidance:
+        classes.append(("Ohjaus", guidance))
+
+    meetings.add_meeting(topic, description, date, start_time, end_time, user_id, classes)
 
     return redirect("/")
 

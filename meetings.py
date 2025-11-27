@@ -1,9 +1,19 @@
 import db
 
-def add_meeting(topic, description, date, start_time, end_time, user_id):
+def add_meeting(topic, description, date, start_time, end_time, user_id, classes):
     sql = """INSERT INTO meetings (topic, description, date, start_time, end_time, user_id)
              VALUES (?, ?, ?, ?, ?, ?)"""
-    db.execute(sql, [topic, description, date, start_time, end_time, user_id])
+    db.execute(sql, [topic, description, date, start_time, end_time, user_id, classes])
+
+    meeting_id = db.last_insert_id()
+
+    sql = "INSERT INTO meeting_class (meeting_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [meeting_id, title, value])
+
+def get_classes(meeting_id):
+    sql = "SELECT title, value FROM meeting_class WHERE meeting_id = ?"
+    return db.query(sql, [meeting_id])
 
 def get_meetings():
     sql = "SELECT id, topic FROM meetings ORDER BY id DESC"
