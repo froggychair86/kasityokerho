@@ -14,6 +14,12 @@ CREATE TABLE meetings (
     user_id INTEGER REFERENCES users
 );
 
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    value TEXT
+);
+
 CREATE TABLE meeting_class (
     id INTEGER PRIMARY KEY,
     meeting_id INTEGER REFERENCES meetings,

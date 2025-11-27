@@ -48,7 +48,8 @@ def show_meeting(meeting_id):
 @app.route("/new_meeting")
 def new_item():
     require_login()
-    return render_template("new_meeting.html")
+    classes = meetings.get_all_classes()
+    return render_template("new_meeting.html", classes=classes)
 
 @app.route("/create_meeting", methods=["POST"])
 def create_meeting():
@@ -72,9 +73,10 @@ def create_meeting():
     user_id = session["user_id"]
 
     classes = []
-    guidance = request.form["guidance"]
-    if guidance:
-        classes.append(("Ohjaus", guidance))
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
 
     meetings.add_meeting(topic, description, date, start_time, end_time, user_id, classes)
 

@@ -1,9 +1,21 @@
 import db
 
+def get_all_classes():
+    sql = "SELECT title, value FROM classes ORDER BY id"
+    result = db.query(sql)
+
+    classes = {}
+    for title, value in result:
+        classes[title] = []
+    for title, value in result:
+        classes[title].append(value)
+
+    return classes
+
 def add_meeting(topic, description, date, start_time, end_time, user_id, classes):
     sql = """INSERT INTO meetings (topic, description, date, start_time, end_time, user_id)
              VALUES (?, ?, ?, ?, ?, ?)"""
-    db.execute(sql, [topic, description, date, start_time, end_time, user_id, classes])
+    db.execute(sql, [topic, description, date, start_time, end_time, user_id])
 
     meeting_id = db.last_insert_id()
 
