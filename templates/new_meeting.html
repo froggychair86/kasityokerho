@@ -1,46 +1,41 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Uusi tapaaminen</title>
-</head>
+{% block title %}Käsityökerho{% endblock %}
 
-<body>
-  <h1>Uusi tapaaminen</h1>
-  <form action="/create_meeting" method="post">
-    <p>
-      Aihe: <br />
-      <input type="text" name="topic" maxlength="50" required />
-    </p>
-    <p>
-      Kuvaus: <br />
-      <textarea name="description" rows="8" cols="60" maxlength="1000" required></textarea>
-    </p>
-    <p>
-      Päivämäärä: <br />
-      <input type="date" name="date" required />
-    </p>
-    <p>
-      Aloitusajankohta: <br />
-      <input type="time" name="start_time" required />
-    </p>
-    <p>
-      Lopetusajankohta: <br />
-      <input type="time" name="end_time" required />
-    </p>
-    {% for class in classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value="">(valitse)</option>
-      {% for option in classes[class] %}
-        <option value="{{ class }}:{{ option }}">{{ option }}</option>
-      {% endfor %}
-      </select>
-    </p>
+{% block content %}
+<h2>Uusi tapaaminen</h2>
+<form action="/create_meeting" method="post">
+  <p>
+    Aihe: <br />
+    <input type="text" name="topic" maxlength="50" required />
+  </p>
+  <p>
+    Kuvaus: <br />
+    <textarea name="description" rows="8" cols="60" maxlength="1000" required></textarea>
+  </p>
+  <p>
+    Päivämäärä: <br />
+    <input type="date" name="date" required />
+  </p>
+  <p>
+    Aloitusajankohta: <br />
+    <input type="time" name="start_time" required />
+  </p>
+  <p>
+    Lopetusajankohta: <br />
+    <input type="time" name="end_time" required />
+  </p>
+  {% for class in classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value="">(valitse)</option>
+    {% for option in classes[class] %}
+      <option value="{{ class }}:{{ option }}">{{ option }}</option>
     {% endfor %}
-    <input type="submit" value="Järjestä tapaaminen" />
-  </form>
-</body>
-
-</html>
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Järjestä tapaaminen" />
+</form>
+{% endblock %}

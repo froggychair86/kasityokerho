@@ -1,37 +1,13 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Käsityökerho</title>
-</head>
+{% block title %}Käsityökerho{% endblock %}
 
-<body>
-  <h1>Käsityökerho</h1>
+{% block content %}
+<h2>Tapaamiset</h2>
 
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä {{ session.username }}, id-numerosi on {{ session.user_id }}
-  </p>
-  {% endif %}
-
-  <p>
-    <a href="/find_meeting">Etsi tapaaminen</a> |
-    {% if session.user_id %}
-    <a href="/new_meeting">Uusi tapaaminen</a> |
-    <a href="/logout">Kirjaudu ulos</a>
-    {% else %}
-    <a href="/login">Kirjaudu sisään</a> |
-    <a href="/register">Luo tunnus</a>
-    {% endif %}
-  </p>
-
-  <h2>Tapaamiset</h2>
-
-  <ul>
-    {% for meeting in meetings %}
-    <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
-    {% endfor %}
-  </ul>
-</body>
-
-</html>
+<ul>
+  {% for meeting in meetings %}
+  <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

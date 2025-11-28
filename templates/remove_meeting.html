@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Tapaamisen poisto</title>
-</head>
+{% block title %}Käsityökerho{% endblock %}
 
-<body>
-  <h1>Tapaamisen poisto</h1>
-  <p>
-    {{ meeting.topic }}
-  </p>
-  <p>
-    {{ meeting.description }}
-  </p>
-  <p>
-    {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
-  </p>
-  <p>Haluatko varmasti poistaa tämän tapaamisen?</p>
-  <form action="/remove_meeting/{{ meeting.id }}" method="post">
-    <input type="submit" name="remove" value="Poista" />
-    <input type="submit" name="back" value="Palaa takaisin" />
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h2>Tapaamisen poisto</h2>
+<p>
+  {{ meeting.topic }}
+</p>
+<p>
+  {{ meeting.description }}
+</p>
+<p>
+  {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
+</p>
+<p>Haluatko varmasti poistaa tämän tapaamisen?</p>
+<form action="/remove_meeting/{{ meeting.id }}" method="post">
+  <input type="submit" name="remove" value="Poista" />
+  <input type="submit" name="back" value="Palaa takaisin" />
+</form>
+{% endblock %}
