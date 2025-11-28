@@ -46,7 +46,7 @@ def get_meeting(meeting_id):
     result = db.query(sql, [meeting_id])
     return result[0] if result else None
 
-def update_meeting(meeting_id, topic, description, date, start_time, end_time):
+def update_meeting(meeting_id, topic, description, date, start_time, end_time, classes):
     sql = """UPDATE meetings SET topic = ?,
                                  description = ?,
                                  date = ?,
@@ -55,7 +55,16 @@ def update_meeting(meeting_id, topic, description, date, start_time, end_time):
                              WHERE id = ?"""
     db.execute(sql, [topic, description, date, start_time, end_time, meeting_id])
 
+    sql = "DELETE FROM meeting_class WHERE meeting_id = ?"
+    db.execute(sql, [meeting_id])
+
+    sql = "INSERT INTO meeting_class (meeting_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [meeting_id, title, value])
+
 def remove_meeting(meeting_id):
+    sql = "DELETE FROM meeting_class WHERE meeting_id = ?"
+    db.execute(sql, [meeting_id])
     sql = "DELETE FROM meetings WHERE id = ?"
     db.execute(sql, [meeting_id])
 

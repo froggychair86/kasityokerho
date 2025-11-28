@@ -78,7 +78,8 @@ def create_meeting():
             parts = entry.split(":")
             classes.append((parts[0], parts[1]))
 
-    meetings.add_meeting(topic, description, date, start_time, end_time, user_id, classes)
+    meetings.add_meeting(topic, description, date,
+    start_time, end_time, user_id, classes)
 
     return redirect("/")
 
@@ -90,7 +91,16 @@ def edit_meeting(meeting_id):
         abort(404)
     if meeting["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit_meeting.html", meeting=meeting)
+
+    all_classes = meetings.get_all_classes()
+    classes = {}
+    for my_class in all_classes:
+        classes[my_class] = ""
+    for entry in meetings.get_classes(meeting_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_meeting.html", meeting=meeting,
+    classes=classes, all_classes=all_classes)
 
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
@@ -118,7 +128,14 @@ def update_meeting():
     if not end_time:
         abort(403)
 
-    meetings.update_meeting(meeting_id, topic, description, date, start_time, end_time)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+
+    meetings.update_meeting(meeting_id, topic, description,
+    date, start_time, end_time, classes)
 
     return redirect("/meeting/" + str(meeting_id))
 
