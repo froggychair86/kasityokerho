@@ -32,6 +32,20 @@
     </ul>
   </p>
   <p>
+    {% if participants %}
+      Osallistujat
+      <ul>
+        {% for participant in participants %}
+        <li><a href="/user/{{ participant.user_id }}">{{ participant.username }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </p>
+  <form action="/participate" method="post">
+    <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
+    <input type="submit" value="Osallistu" />
+  </form>
+  <p>
     <a href="/">Etusivulle</a>
   </p>
 </body>

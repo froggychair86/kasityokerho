@@ -23,6 +23,17 @@ def add_meeting(topic, description, date, start_time, end_time, user_id, classes
     for title, value in classes:
         db.execute(sql, [meeting_id, title, value])
 
+def participate(meeting_id, user_id):
+    sql = "INSERT INTO participants (meeting_id, user_id) VALUES (?, ?)"
+    db.execute(sql, [meeting_id, user_id])
+
+def get_participants(meeting_id):
+    sql = """SELECT users.id user_id, users.username
+             FROM participants, users
+             WHERE participants.meeting_id = ? AND participants.user_id = users.id
+             ORDER BY participants.id"""
+    return db.query(sql, [meeting_id])
+
 def get_classes(meeting_id):
     sql = "SELECT title, value FROM meeting_class WHERE meeting_id = ?"
     return db.query(sql, [meeting_id])
