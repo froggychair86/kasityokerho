@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Flask
 from flask import abort, redirect, render_template, request, session
-from datetime import date
+import datetime
 import config
 import db
 import meetings
@@ -64,7 +64,10 @@ def create_meeting():
     if not description or len(description) > 1000:
         abort(403)
     date = request.form["date"]
-    if not date:
+    date_int = datetime.datetime(int(date[:4]), int(date[5:7]), int(date[8:]))
+    year = date_int.year
+    year_now = datetime.datetime.today().year
+    if not date or date_int < datetime.datetime.today() or year > year_now + 3:
         abort(403)
     start_time = request.form["start_time"]
     if not start_time:
@@ -72,6 +75,11 @@ def create_meeting():
     end_time = request.form["end_time"]
     if not end_time:
         abort(403)
+    if int(start_time[:2]) > int(end_time[:2]):
+        abort(403)
+    elif int(start_time[:2]) <= int(end_time[:2]):
+        if int(start_time[3:]) > int(end_time[3:]):
+            abort(403)
     user_id = session["user_id"]
 
     all_classes = meetings.get_all_classes()
@@ -141,7 +149,10 @@ def update_meeting():
     if not description or len(description) > 1000:
         abort(403)
     date = request.form["date"]
-    if not date:
+    date_int = datetime.datetime(int(date[:4]), int(date[5:7]), int(date[8:]))
+    year = date_int.year
+    year_now = datetime.datetime.today().year
+    if not date or date_int < datetime.datetime.today() or year > year_now + 3:
         abort(403)
     start_time = request.form["start_time"]
     if not start_time:
@@ -149,6 +160,11 @@ def update_meeting():
     end_time = request.form["end_time"]
     if not end_time:
         abort(403)
+    if int(start_time[:2]) > int(end_time[:2]):
+        abort(403)
+    elif int(start_time[:2]) <= int(end_time[:2]):
+        if int(start_time[3:]) > int(end_time[3:]):
+            abort(403)
 
     all_classes = meetings.get_all_classes()
 
