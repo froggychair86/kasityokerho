@@ -113,6 +113,20 @@ def participate():
 
     return redirect("/meeting/" + str(meeting_id))
 
+@app.route("/cancel_participation", methods=["POST"])
+def cancel_participation():
+    require_login()
+
+    meeting_id = request.form["meeting_id"]
+    meeting = meetings.get_meeting(meeting_id)
+    if not meeting:
+        abort(404)
+    user_id = session["user_id"]
+
+    meetings.cancel_participation(user_id)
+
+    return redirect("/meeting/" + str(meeting_id))
+
 @app.route("/edit_meeting/<int:meeting_id>")
 def edit_meeting(meeting_id):
     require_login()

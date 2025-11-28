@@ -45,6 +45,10 @@
     <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
     <input type="submit" value="Osallistu" />
   </form>
+  <form action="/cancel_participation" method="post">
+    <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
+    <input type="submit" value="Peru osallistuminen" />
+  </form>
   <p>
     <a href="/">Etusivulle</a>
   </p>

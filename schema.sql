@@ -17,7 +17,7 @@ CREATE TABLE meetings (
 CREATE TABLE participants (
     id INTEGER PRIMARY KEY,
     meeting_id INTEGER REFERENCES meetings,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER UNIQUE REFERENCES users
 );
 
 CREATE TABLE classes (

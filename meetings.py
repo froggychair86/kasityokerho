@@ -27,6 +27,10 @@ def participate(meeting_id, user_id):
     sql = "INSERT INTO participants (meeting_id, user_id) VALUES (?, ?)"
     db.execute(sql, [meeting_id, user_id])
 
+def cancel_participation(user_id):
+    sql = "DELETE FROM participants WHERE user_id = ?"
+    db.execute(sql, [user_id])
+
 def get_participants(meeting_id):
     sql = """SELECT users.id user_id, users.username
              FROM participants, users
