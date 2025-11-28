@@ -12,24 +12,17 @@
   <p>
     Olet kirjautunut nimellä {{ session.username }}, id-numerosi on {{ session.user_id }}
   </p>
-  <p>
-    <a href="/logout">Kirjaudu ulos</a>
-  </p>
-
-  <p>
-    <a href="/new_meeting">Uusi tapaaminen</a>
-  </p>
-
-  {% else %}
-  <p>
-    <a href="/login">Kirjaudu sisään</a>
-    <a href="/register">Luo tunnus</a>
-  </p>
-
   {% endif %}
 
   <p>
-    <a href="/find_meeting">Etsi tapaaminen</a>
+    <a href="/find_meeting">Etsi tapaaminen</a> |
+    {% if session.user_id %}
+    <a href="/new_meeting">Uusi tapaaminen</a> |
+    <a href="/logout">Kirjaudu ulos</a>
+    {% else %}
+    <a href="/login">Kirjaudu sisään</a> |
+    <a href="/register">Luo tunnus</a>
+    {% endif %}
   </p>
 
   <h2>Tapaamiset</h2>
