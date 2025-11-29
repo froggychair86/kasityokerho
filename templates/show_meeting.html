@@ -39,10 +39,12 @@ Tapaamisen järjestäjä: <a href="/user/{{ meeting.user_id }}">{{ meeting.usern
 {% if session.user_id %}
 <form action="/participate" method="post">
   <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Osallistu" />
 </form>
 <form action="/cancel_participation" method="post">
   <input type="hidden" name="meeting_id" value="{{ meeting.id }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Peru osallistuminen" />
 </form>
 {% endif %}

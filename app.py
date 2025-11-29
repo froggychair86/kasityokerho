@@ -1,3 +1,4 @@
+import secrets
 import sqlite3
 from flask import Flask
 from flask import abort, flash, redirect, render_template, request, session
@@ -12,6 +13,12 @@ app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.route("/")
@@ -48,14 +55,16 @@ def show_meeting(meeting_id):
     meeting=meeting, classes=classes, participants=participants)
 
 @app.route("/new_meeting")
-def new_item():
+def new_meeting():
     require_login()
+
     classes = meetings.get_all_classes()
     return render_template("new_meeting.html", classes=classes)
 
 @app.route("/create_meeting", methods=["POST"])
 def create_meeting():
     require_login()
+    check_csrf()
 
     topic = request.form["topic"]
     if not topic:
@@ -123,6 +132,7 @@ def create_meeting():
 @app.route("/participate", methods=["POST"])
 def participate():
     require_login()
+    check_csrf()
 
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
@@ -137,6 +147,7 @@ def participate():
 @app.route("/cancel_participation", methods=["POST"])
 def cancel_participation():
     require_login()
+    check_csrf()
 
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
@@ -151,6 +162,7 @@ def cancel_participation():
 @app.route("/edit_meeting/<int:meeting_id>")
 def edit_meeting(meeting_id):
     require_login()
+
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
         abort(404)
@@ -171,6 +183,8 @@ def edit_meeting(meeting_id):
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
     require_login()
+    check_csrf()
+
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
@@ -244,6 +258,7 @@ def update_meeting():
 @app.route("/remove_meeting/<int:meeting_id>", methods=["GET", "POST"])
 def remove_meeting(meeting_id):
     require_login()
+
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
         abort(404)
@@ -295,6 +310,7 @@ def login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             flash("VIRHE: väärä tunnus tai salasana")

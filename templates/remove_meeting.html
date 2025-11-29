@@ -15,6 +15,7 @@
 </p>
 <p>Haluatko varmasti poistaa tämän tapaamisen?</p>
 <form action="/remove_meeting/{{ meeting.id }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" name="remove" value="Poista" />
   <input type="submit" name="back" value="Palaa takaisin" />
 </form>
