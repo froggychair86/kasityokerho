@@ -10,3 +10,10 @@ body {
     margin: 0.5em;
     padding: 0.2em 0.5em;
 }
+
+.info {
+  border: 2px solid maroon;
+  padding: 0.5em;
+  background-color: brown;
+  color: papayawhip;
+}

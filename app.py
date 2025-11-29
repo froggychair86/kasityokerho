@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import abort, redirect, render_template, request, session
+from flask import abort, flash, redirect, render_template, request, session
 import datetime
 import config
 import db
@@ -58,28 +58,47 @@ def create_meeting():
     require_login()
 
     topic = request.form["topic"]
-    if not topic or len(topic) > 50:
-        abort(403)
+    if not topic:
+        flash("VIRHE: Aihe puuttuu")
+        return redirect("/new_meeting")
+    if len(topic) > 50:
+        flash("VIRHE: Aiheen pituus yli 50 merkkiä")
+        return redirect("/new_meeting")
     description = request.form["description"]
-    if not description or len(description) > 1000:
-        abort(403)
+    if not description:
+        flash("VIRHE: Kuvaus puuttuu")
+        return redirect("/new_meeting")
+    if len(description) > 1000:
+        flash("VIRHE: Kuvauksen pituus yli 1 000 merkkiä")
+        return redirect("/new_meeting")
     date = request.form["date"]
     date_int = datetime.datetime(int(date[:4]), int(date[5:7]), int(date[8:]))
     year = date_int.year
     year_now = datetime.datetime.today().year
-    if not date or date_int < datetime.datetime.today() or year > year_now + 3:
-        abort(403)
+    if not date:
+        flash("VIRHE: Päivämäärä puuttuu")
+        return redirect("/new_meeting")
+    if date_int < datetime.datetime.today():
+        flash("VIRHE: Et voi järjestää tapahtumaa menneisyydessä")
+        return redirect("/new_meeting")
+    if year > year_now + 3:
+        flash(f"VIRHE: Voit suunnitella tapahtumia vain vuoteen {year_now + 3} asti")
+        return redirect("/new_meeting")
     start_time = request.form["start_time"]
     if not start_time:
-        abort(403)
+        flash("VIRHE: Aloitusajankohta puuttuu")
+        return redirect("/new_meeting")
     end_time = request.form["end_time"]
     if not end_time:
-        abort(403)
+        flash("VIRHE: Lopetusajankohta puuttuu")
+        return redirect("/new_meeting")
     if int(start_time[:2]) > int(end_time[:2]):
-        abort(403)
+        flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
+        return redirect("/new_meeting")
     elif int(start_time[:2]) <= int(end_time[:2]):
         if int(start_time[3:]) > int(end_time[3:]):
-            abort(403)
+            flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
+            return redirect("/new_meeting")
     user_id = session["user_id"]
 
     all_classes = meetings.get_all_classes()
@@ -89,9 +108,11 @@ def create_meeting():
         if entry:
             title, value = entry.split(":")
             if title not in all_classes:
-                abort(403)
+                flash(f"VIRHE: Luokkaa {title} ei löydy")
+                return redirect("/new_meeting")
             if value not in all_classes[title]:
-                abort(403)
+                flash(f"VIRHE: Arvoa {value} ei löydy")
+                return redirect("/new_meeting")
             classes.append((title, value))
 
     meetings.add_meeting(topic, description, date,
@@ -134,7 +155,8 @@ def edit_meeting(meeting_id):
     if not meeting:
         abort(404)
     if meeting["user_id"] != session["user_id"]:
-        abort(403)
+        flash("VIRHE: Sinulla ei ole oikeutta muokata tätä tapahtumaa")
+        return redirect(f"/edit_meeting/{meeting_id}")
 
     all_classes = meetings.get_all_classes()
     classes = {}
@@ -154,31 +176,51 @@ def update_meeting():
     if not meeting:
         abort(404)
     if meeting["user_id"] != session["user_id"]:
-        abort(403)
+        flash("VIRHE: Sinulla ei ole oikeutta muokata tätä tapahtumaa")
+        return redirect(f"/edit_meeting/{meeting_id}")
 
     topic = request.form["topic"]
-    if not topic or len(topic) > 50:
-        abort(403)
+    if not topic:
+        flash("VIRHE: Aihe puuttuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
+    if len(topic) > 50:
+        flash("VIRHE: Aiheen pituus yli 50 merkkiä")
+        return redirect(f"/edit_meeting/{meeting_id}")
     description = request.form["description"]
-    if not description or len(description) > 1000:
-        abort(403)
+    if not description:
+        flash("VIRHE: Kuvaus puuttuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
+    if len(description) > 1000:
+        flash("VIRHE: Kuvauksen pituus yli 1 000 merkkiä")
+        return redirect(f"/edit_meeting/{meeting_id}")
     date = request.form["date"]
     date_int = datetime.datetime(int(date[:4]), int(date[5:7]), int(date[8:]))
     year = date_int.year
     year_now = datetime.datetime.today().year
-    if not date or date_int < datetime.datetime.today() or year > year_now + 3:
-        abort(403)
+    if not date:
+        flash("VIRHE: Päivämäärä puuttuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
+    if date_int < datetime.datetime.today():
+        flash("VIRHE: Et voi järjestää tapahtumaa menneisyydessä")
+        return redirect(f"/edit_meeting/{meeting_id}")
+    if year > year_now + 3:
+        flash(f"VIRHE: Voit suunnitella tapahtumia vain vuoteen {year_now + 3} asti")
+        return redirect(f"/edit_meeting/{meeting_id}")
     start_time = request.form["start_time"]
     if not start_time:
-        abort(403)
+        flash("VIRHE: Aloitusajankohta puuttuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
     end_time = request.form["end_time"]
     if not end_time:
-        abort(403)
+        flash("VIRHE: Lopetusajankohta puuttuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
     if int(start_time[:2]) > int(end_time[:2]):
-        abort(403)
+        flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
+        return redirect(f"/edit_meeting/{meeting_id}")
     elif int(start_time[:2]) <= int(end_time[:2]):
         if int(start_time[3:]) > int(end_time[3:]):
-            abort(403)
+            flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
+            return redirect(f"/edit_meeting/{meeting_id}")
 
     all_classes = meetings.get_all_classes()
 
@@ -187,9 +229,11 @@ def update_meeting():
         if entry:
             title, value = entry.split(":")
             if title not in all_classes:
-                abort(403)
+                flash(f"VIRHE: Luokkaa {title} ei löydy")
+                return redirect(f"/edit_meeting/{meeting_id}")
             if value not in all_classes[title]:
-                abort(403)
+                flash(f"VIRHE: Arvoa {value} ei löydy")
+                return redirect(f"/edit_meeting/{meeting_id}")
             classes.append((title, value))
 
     meetings.update_meeting(meeting_id, topic, description,
@@ -204,7 +248,8 @@ def remove_meeting(meeting_id):
     if not meeting:
         abort(404)
     if meeting["user_id"] != session["user_id"]:
-        abort(403)
+        flash("VIRHE: Sinulla ei ole oikeutta poistaa tätä tapahtumaa")
+        return redirect(f"/remove_meeting/{meeting_id}")
 
     if request.method == "GET":
         return render_template("remove_meeting.html", meeting=meeting)
@@ -226,12 +271,14 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
+        flash("VIRHE: salasanat eivät ole samat")
+        return redirect("/register")
 
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+        flash("VIRHE: tunnus on jo varattu")
+        return redirect("/register")
 
     return render_template("create.html")
 
@@ -250,7 +297,8 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            return "VIRHE: väärä tunnus tai salasana"
+            flash("VIRHE: väärä tunnus tai salasana")
+            return redirect("/login")
 
 @app.route("/logout")
 def logout():
