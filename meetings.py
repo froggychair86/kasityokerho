@@ -43,7 +43,16 @@ def get_classes(meeting_id):
     return db.query(sql, [meeting_id])
 
 def get_meetings():
-    sql = "SELECT id, topic FROM meetings ORDER BY id DESC"
+    sql = """SELECT meetings.id,
+                    meetings.topic,
+                    meetings.date,
+                    meetings.start_time,
+                    meetings.end_time,
+                    users.id,
+                    users.username
+             FROM meetings, users
+             WHERE meetings.user_id = users.id
+             ORDER BY meetings.date DESC"""
     return db.query(sql)
 
 def get_meeting(meeting_id):
@@ -86,7 +95,7 @@ def remove_meeting(meeting_id):
 def find_meetings(query):
     sql = """SELECT id, topic
              FROM meetings
-             WHERE topic LIKE ? OR description LIKE ?
+             WHERE topic LIKE ? OR description LIKE ? OR date LIKE ?
              ORDER BY id DESC"""
     like = "%" + query + "%"
-    return db.query(sql, [like, like])
+    return db.query(sql, [like, like, like])

@@ -8,12 +8,12 @@
   Käyttäjä on järjestänyt yhteensä {{ meetings | count }} tapaamista
 </p>
 <h2>Tapaamiset</h2>
-<ul>
-  {% for meeting in meetings %}
-  <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
-  {% endfor %}
-</ul>
+{% for meeting in meetings %}
+<div>
+<a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a>
+</div>
+{% endfor %}
 <p>
-  <a href="/">Takaisin</a>
+  <a href="/">Etusivulle</a>
 </p>
 {% endblock %}

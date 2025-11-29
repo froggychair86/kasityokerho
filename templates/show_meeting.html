@@ -20,22 +20,22 @@
   Tapaamisen järjestäjä: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a>
 </p>
 <p>
-  <ul>
-  {% if classes %}
-    {% for class in classes %}
-    <li>{{ class.value }}</li>
-    {% endfor %}
-  {% endif %}
-  </ul>
+{% if classes %}
+  {% for class in classes %}
+  <div>
+  {{ class.value }}
+  </div>
+  {% endfor %}
+{% endif %}
 </p>
 <p>
   {% if participants %}
     Osallistujat
-    <ul>
-      {% for participant in participants %}
-      <li><a href="/user/{{ participant.user_id }}">{{ participant.username }}</a></li>
-      {% endfor %}
-    </ul>
+    {% for participant in participants %}
+    <div>
+    <a href="/user/{{ participant.user_id }}">{{ participant.username }}</a>
+    </div>
+    {% endfor %}
   {% endif %}
 </p>
 <form action="/participate" method="post">

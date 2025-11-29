@@ -5,9 +5,12 @@
 {% block content %}
 <h2>Tapaamiset</h2>
 
-<ul>
-  {% for meeting in meetings %}
-  <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
-  {% endfor %}
-</ul>
+
+{% for meeting in meetings %}
+<div class="meeting">
+<a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a> <br />
+{{ meeting.date }} klo {{meeting.start_time }}-{{ meeting.end_time }} <br />
+Järjestäjä: <a href="/user/{{ meeting.user_id }}">{{ meeting.username }}</a> <br />
+</div>
+{% endfor %}
 {% endblock %}

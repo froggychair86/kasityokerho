@@ -19,10 +19,10 @@
 {% if query %}
 <h3>Tulokset</h3>
 
-<ul>
-  {% for meeting in results %}
-  <li><a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a></li>
-  {% endfor %}
-</ul>
+{% for meeting in results %}
+<div>
+<a href="/meeting/{{ meeting.id }}">{{ meeting.topic }}</a>
+</div>
+{% endfor %}
 {% endif %}
 {% endblock %}
