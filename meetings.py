@@ -89,6 +89,8 @@ def update_meeting(meeting_id, topic, description, date, start_time, end_time, c
 def remove_meeting(meeting_id):
     sql = "DELETE FROM meeting_class WHERE meeting_id = ?"
     db.execute(sql, [meeting_id])
+    sql = "DELETE FROM participants WHERE meeting_id = ?"
+    db.execute(sql, [meeting_id])
     sql = "DELETE FROM meetings WHERE id = ?"
     db.execute(sql, [meeting_id])
 
