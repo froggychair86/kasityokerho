@@ -2,11 +2,11 @@ body {
   margin: auto;
   max-width: 50em;
   font-family: sans-serif;
-  background-color: papayawhip;
+  background-color: thistle;
 }
 
 .meeting {
-    border: 2px solid peachpuff;
+    border: 2px solid plum;
     margin: 0.5em;
     padding: 0.2em 0.5em;
 }
@@ -16,4 +16,11 @@ body {
   padding: 0.5em;
   background-color: brown;
   color: papayawhip;
+}
+
+.header {
+    border: 4px solid indigo;
+    padding: 0.5em;
+    background-color: purple;
+    color: thistle;
 }
