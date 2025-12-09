@@ -11,7 +11,7 @@
 </p>
 {% endif %}
 <div>
-{{ meeting.description }}
+{{ meeting.description | show_lines }}
 </div>
 <div>
 {{ meeting.date }} klo {{ meeting.start_time }}-{{ meeting.end_time }}
