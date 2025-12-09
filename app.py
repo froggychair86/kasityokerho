@@ -58,8 +58,8 @@ def show_meeting(meeting_id):
         abort(404)
     classes = meetings.get_classes(meeting_id)
     participants = meetings.get_participants(meeting_id)
-    return render_template("show_meeting.html",
-    meeting=meeting, classes=classes, participants=participants)
+    return render_template("show_meeting.html", meeting=meeting,
+                           classes=classes, participants=participants)
 
 @app.route("/new_meeting")
 def new_meeting():
@@ -184,8 +184,8 @@ def edit_meeting(meeting_id):
     for entry in meetings.get_classes(meeting_id):
         classes[entry["title"]] = entry["value"]
 
-    return render_template("edit_meeting.html",
-    meeting=meeting, classes=classes, all_classes=all_classes)
+    return render_template("edit_meeting.html", meeting=meeting,
+                           classes=classes, all_classes=all_classes)
 
 @app.route("/update_meeting", methods=["POST"])
 def update_meeting():
