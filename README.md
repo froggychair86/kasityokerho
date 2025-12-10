@@ -1,4 +1,4 @@
-# kasityokerho
+# Käsityökerho
 
 ## Sovelluksen toiminnot
 
@@ -9,8 +9,8 @@
 - Sovelluksessa on käyttäjäsivut, joilla näkyy tilastoja ja käyttäjän luomat tapaamiset.
 - Käyttäjä pystyy valitsemaan tapaamiselle luokitteluja.
 
-## Sovelluksen asennus
+## Sovelluksen asennus (Linux)
 
 - Asenna `flask`-kirjasto komennolla `$ pip install flask`
-- Luo `database.db`-niminen tiedosto ja lisää siihen taulut komennolla `$ sqlite3 database.db < schema.sql`
+- Lisää tietokannan taulut tiedostoon `database.db` komennoilla `$ sqlite3 database.db < schema.sql` ja `$ sqlite3 database.db < init.sql`
 - Sovellus käynnistyy kirjoittamalla komennon `$ flask run` ja klikkaamalla tulosteen linkkiä
