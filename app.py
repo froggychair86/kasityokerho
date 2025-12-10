@@ -12,15 +12,21 @@ import users
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def forbidden():
+    abort(403)
+
+def not_found():
+    abort(404)
+
 def require_login():
     if "user_id" not in session:
-        abort(403)
+        forbidden()
 
 def check_csrf():
     if "csrf_token" not in request.form:
-        abort(403)
+        forbidden()
     if request.form["csrf_token"] != session["csrf_token"]:
-        abort(403)
+        forbidden()
 
 @app.template_filter()
 def show_lines(content):
@@ -37,7 +43,7 @@ def index():
 def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
-        abort(404)
+        not_found()
     meetings = users.get_meetings(user_id)
     return render_template("show_user.html", user=user, meetings=meetings)
 
@@ -55,7 +61,7 @@ def find_meeting():
 def show_meeting(meeting_id):
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     classes = meetings.get_classes(meeting_id)
     participants = meetings.get_participants(meeting_id)
     return render_template("show_meeting.html", meeting=meeting,
@@ -144,7 +150,7 @@ def participate():
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     user_id = session["user_id"]
 
     meetings.participate(meeting_id, user_id)
@@ -159,7 +165,7 @@ def cancel_participation():
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     user_id = session["user_id"]
 
     meetings.cancel_participation(user_id)
@@ -172,7 +178,7 @@ def edit_meeting(meeting_id):
 
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     if meeting["user_id"] != session["user_id"]:
         flash("VIRHE: Sinulla ei ole oikeutta muokata tätä tapahtumaa")
         return redirect(f"/edit_meeting/{meeting_id}")
@@ -195,7 +201,7 @@ def update_meeting():
     meeting_id = request.form["meeting_id"]
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     if meeting["user_id"] != session["user_id"]:
         flash("VIRHE: Sinulla ei ole oikeutta muokata tätä tapahtumaa")
         return redirect(f"/edit_meeting/{meeting_id}")
@@ -268,7 +274,7 @@ def remove_meeting(meeting_id):
 
     meeting = meetings.get_meeting(meeting_id)
     if not meeting:
-        abort(404)
+        not_found()
     if meeting["user_id"] != session["user_id"]:
         flash("VIRHE: Sinulla ei ole oikeutta poistaa tätä tapahtumaa")
         return redirect(f"/remove_meeting/{meeting_id}")
