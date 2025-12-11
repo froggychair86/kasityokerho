@@ -7,7 +7,6 @@ from flask import abort, flash, redirect, render_template, request, session
 import markupsafe
 
 import config
-import db
 import meetings
 import users
 
@@ -46,8 +45,8 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         not_found()
-    meetings = users.get_meetings(user_id)
-    return render_template("show_user.html", user=user, meetings=meetings)
+    user_meetings = users.get_meetings(user_id)
+    return render_template("show_user.html", user=user, user_meetings=user_meetings)
 
 @app.route("/find_meeting")
 def find_meeting():
@@ -119,7 +118,7 @@ def create_meeting():
     if int(start_time[:2]) > int(end_time[:2]):
         flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
         return redirect("/new_meeting")
-    elif int(start_time[:2]) <= int(end_time[:2]):
+    if int(start_time[:2]) <= int(end_time[:2]):
         if int(start_time[3:]) > int(end_time[3:]):
             flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
             return redirect("/new_meeting")
@@ -140,7 +139,7 @@ def create_meeting():
             classes.append((title, value))
 
     meetings.add_meeting(topic, description, date,
-    start_time, end_time, user_id, classes)
+                         start_time, end_time, user_id, classes)
 
     return redirect("/")
 
@@ -246,7 +245,7 @@ def update_meeting():
     if int(start_time[:2]) > int(end_time[:2]):
         flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
         return redirect(f"/edit_meeting/{meeting_id}")
-    elif int(start_time[:2]) <= int(end_time[:2]):
+    if int(start_time[:2]) <= int(end_time[:2]):
         if int(start_time[3:]) > int(end_time[3:]):
             flash("VIRHE: Tapaamisen tulee alkaa ennen kuin se loppuu")
             return redirect(f"/edit_meeting/{meeting_id}")
