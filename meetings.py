@@ -42,7 +42,7 @@ def get_classes(meeting_id):
     sql = "SELECT title, value FROM meeting_class WHERE meeting_id = ?"
     return db.query(sql, [meeting_id])
 
-def get_meetings():
+def get_meetings(page, page_size):
     sql = """SELECT meetings.id,
                     meetings.topic,
                     meetings.date,
@@ -52,8 +52,11 @@ def get_meetings():
                     users.username
              FROM meetings, users
              WHERE meetings.user_id = users.id
-             ORDER BY meetings.date DESC"""
-    return db.query(sql)
+             ORDER BY meetings.date DESC
+             LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [limit, offset])
 
 def get_meeting(meeting_id):
     sql = """SELECT meetings.id,
@@ -101,3 +104,8 @@ def find_meetings(query):
              ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like, like])
+
+def meeting_count():
+    sql = "SELECT COUNT(id) count FROM meetings"
+    result = db.query(sql)
+    return result[0]["count"]

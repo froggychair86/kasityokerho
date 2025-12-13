@@ -1,4 +1,5 @@
 import datetime
+import math
 import secrets
 import sqlite3
 
@@ -36,9 +37,21 @@ def show_lines(content):
     return markupsafe.Markup(content)
 
 @app.route("/")
-def index():
-    all_meetings = meetings.get_meetings()
-    return render_template("index.html", meetings=all_meetings)
+@app.route("/<int:page>")
+def index(page=1):
+    page_size = 10
+    meeting_count = meetings.meeting_count()
+    page_count = math.ceil(meeting_count / page_size )
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+
+    all_meetings = meetings.get_meetings(page, page_size)
+    return render_template("index.html", page=page, page_count=page_count,
+                           all_meetings=all_meetings)
 
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
